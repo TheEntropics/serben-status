@@ -43,6 +43,7 @@ function loop() {
 	// do the port scan
 	util.nmap();
 	// read the cpu/ram/uptime info
+	util.sysInfo();
 	// load the log
 }
 
