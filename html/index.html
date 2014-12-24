@@ -1,0 +1,129 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Server Monitor</title>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="css/metricsgraphics.css">
+	<link rel="stylesheet" href="css/jquery.circliful.css">
+
+	<link rel="stylesheet" href="css/style.css">
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js' charset='utf-8'></script>
+	<script src="js/metricsgraphics.min.js"></script>
+	<script src="js/jquery.circliful.min.js"></script>
+
+	<script src="js/script.js"></script>
+</head>
+<body class="container">
+	<div class="row">
+		<div id="server-up" class="alert alert-success col-md-8"><a href="http://serben.tk" class="alert-link">serben.tk</a> is up!</div>
+		<p class="col-md-8"><small>Uptime: 2 day</small></p>
+	</div>
+	<div class="row">
+		<div class="col-xs-2">
+		<div id="cpu-perc" 
+			data-dimension="190" 
+			data-text="loading..." 
+			data-info="CPU" 
+			data-width="10" 
+			data-fontsize="28" 
+			data-fgcolor="#61a9dc" 
+			data-bgcolor="#eee" 
+			data-fill="#ddd" 
+			data-total="100" 
+			data-part="20"></div></div>
+		<div id="cpu-graph" class="col-md-6"></div>
+	</div>
+
+	<div class="row">
+		<div class="col-xs-2">
+		<div id="ram-perc" 
+			data-dimension="190" 
+			data-text="loading..." 
+			data-info="RAM" 
+			data-width="10" 
+			data-fontsize="28" 
+			data-fgcolor="#2ecc71" 
+			data-bgcolor="#eee" 
+			data-fill="#ddd" 
+			data-total="100" 
+			data-part="50"></div></div>
+		<div id="ram-graph" class="col-md-6"></div>
+	</div>
+
+	<h1>Services</h1>
+	<div id="service-list" class="col-md-8 row">
+		<div id="services" class="col-md-6">
+			<div class="service service-online">ssh</div>
+			<div class="service service-online">ftp</div>
+			<div class="service service-online">ftp</div>
+			<div class="service service-online">ftp</div>
+		</div>
+		<div id="games" class="col-md-6">
+			<div class="service service-online">Minecraft</div>
+			<div class="service service-offline">Minecraft-alt</div>
+		</div>
+		<div id="database" class="col-md-6">
+			<div class="service service-online">MySQL</div>
+			<div class="service service-offline">Portgres</div>
+		</div>
+	</div>
+
+	<div class="col-md-8">
+		<h1>Maintenance Log</h1>
+		<div class="panel panel-danger">
+			<div class="panel-heading"><h3 class="panel-title">Forced reboot after crashing</h3></div>
+			<div class="panel-body">
+				The system was rebooted after a crash. The system is now full operative.
+			</div>
+		</div>
+		<p><em>Nothing to show here!</em></p>
+	</div>
+
+	<script>
+		$( document ).ready(function() {
+			$('#cpu-perc').circliful();
+			$('#ram-perc').circliful();
+
+			data = [
+				{ date: new Date("2014-02-01"), value: 0.50 },
+				{ date: new Date("2014-03-01"), value: 0.25 },
+				{ date: new Date("2014-04-01"), value: 0.50 },
+				{ date: new Date("2014-05-01"), value: 0.35 },
+			];
+			data_graphic({
+				title: "",
+				description: "",
+				data: data,
+				width: $("#cpu-graph").width(),
+				height: $("#cpu-perc").height(),
+				target: '#cpu-graph',
+			    x_accessor: 'date',
+			    y_accessor: 'value',
+				format: 'percentage'
+				//chart_type: 'missing-data',
+				//missing_text: 'loading...'
+			});
+			data_graphic({
+				title: "",
+				description: "",
+				data: data,
+				width: $("#cpu-graph").width(),
+				height: $("#cpu-perc").height(),
+				target: '#ram-graph',
+			    x_accessor: 'date',
+			    y_accessor: 'value',
+				format: 'percentage',
+				//chart_type: 'missing-data',
+				//missing_text: 'loading...'
+			});
+
+	    });
+	</script>
+</body>

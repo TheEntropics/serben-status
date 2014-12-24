@@ -1,0 +1,25 @@
+body {
+	padding: 20px;
+}
+#server-up {
+	margin-bottom: 0px;
+	text-align: center;
+	font-size: 25px;
+}
+
+#service-list > div {
+	margin-bottom: 20px;
+}
+
+.service {
+	font-size: 20px;
+	margin: 1px;
+	padding: 5px 5px 5px 10px;
+}
+
+.service-online {
+	background: #2ecc71;
+}
+.service-offline {
+	background: #e74c3c;
+}
