@@ -16,7 +16,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js' charset='utf-8'></script>
 	<script src="js/metricsgraphics.min.js"></script>
-	<script src="js/jquery.circliful.min.js"></script>
+	<script type="text/javascript" src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1','packages':['gauge']}]}"></script>
 
 	<script src="js/script.js"></script>
 </head>
@@ -26,34 +26,12 @@
 		<p class="col-md-8"><small>Uptime: <span id="uptime">loading</span></small></p>
 	</div>
 	<div class="row">
-		<div class="col-xs-2">
-		<div id="cpu-perc" 
-			data-dimension="190" 
-			data-text="loading..." 
-			data-info="CPU" 
-			data-width="10" 
-			data-fontsize="28" 
-			data-fgcolor="#61a9dc" 
-			data-bgcolor="#eee" 
-			data-fill="#ddd" 
-			data-total="100" 
-			data-part="20"></div></div>
+		<div class="col-xs-2"><div id="cpu-perc"></div></div>
 		<div id="cpu-graph" class="col-md-6"></div>
 	</div>
 
 	<div class="row">
-		<div class="col-xs-2">
-		<div id="ram-perc" 
-			data-dimension="190" 
-			data-text="loading..." 
-			data-info="RAM" 
-			data-width="10" 
-			data-fontsize="28" 
-			data-fgcolor="#2ecc71" 
-			data-bgcolor="#eee" 
-			data-fill="#ddd" 
-			data-total="100" 
-			data-part="50"></div></div>
+		<div class="col-xs-2"><div id="ram-perc"></div></div>
 		<div id="ram-graph" class="col-md-6"></div>
 	</div>
 
@@ -76,8 +54,8 @@
 
 	<script>
 		$( document ).ready(function() {
-			$('#cpu-perc').circliful();
-			$('#ram-perc').circliful();
+			//$('#cpu-perc').circliful();
+			//$('#ram-perc').circliful();
 
 			data = [
 				{ date: new Date("2014-02-01"), value: 0.50 },

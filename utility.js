@@ -1,4 +1,4 @@
-var target = "5.135.177.211";
+var target; 
 
 var mysql = require("mysql");
 var connection = mysql.createConnection({
@@ -75,6 +75,9 @@ var buffers = {
 	uptime: 0.0
 };
 
+function init(host_ip) {
+	target = host_ip;
+}
 
 
 //
@@ -112,7 +115,7 @@ function ping() {
 	setTimeout(do_ping, 2000);
 }
 function loadPing() {
-	connection.query("SELECT * FROM pings WHERE 1 ORDER BY ID DESC LIMIT " + PING_HISTORY_SIZE, function (err, data) {
+	connection.query("SELECT * FROM pings WHERE 1 ORDER BY date DESC LIMIT " + PING_HISTORY_SIZE, function (err, data) {
 		if (err) console.log("Error getting old data: " + err);
 		else {
 			var i = data.length;
@@ -204,7 +207,7 @@ SYS_HISTORY_LENGHT = 500;
 function sysInfo() {
 	var request = require("request");
 	request("http://"+target+"/status-wrapper.php", function(error, response, body) {
-		if (error) console.log("Error retriving sysInfo");
+		if (error) console.log("Error retriving sysInfo: " + error);
 		else {
 			var data = "";
 			try {
@@ -239,7 +242,7 @@ function sysInfo() {
 	});
 }
 function loadSysInfo() {
-	connection.query("SELECT * FROM sysInfo WHERE 1 ORDER BY ID DESC LIMIT " + SYS_HISTORY_LENGHT, function(err, data) {
+	connection.query("SELECT * FROM sysInfo WHERE 1 ORDER BY date DESC LIMIT " + SYS_HISTORY_LENGHT, function(err, data) {
 		if (err) console.log("Error retriving old data: " + err);
 		else {
 			var i = data.length;
@@ -265,3 +268,4 @@ exports.loadPing = loadPing;
 exports.loadSysInfo = loadSysInfo;
 
 exports.buffers = buffers;
+exports.init = init;

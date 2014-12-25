@@ -17,26 +17,51 @@ var serviceNames = {
 	"urbanterror": ["UrbanTerror", "games"]
 };
 
-$(document).ready(function(){
-$.ajax({
-	url: "/data",
-	dataType: "json",
-	success: function(data) {
-		server_up(data.server_up);
-		uptime(data.uptime);
-		srv = [];
-		for (d in data.services.online.tcp) srv.push([data.services.online.tcp[d], true]);
-		for (d in data.services.online.udp) srv.push([data.services.online.udp[d], true]);
-		for (d in data.services.offline.tcp) srv.push([data.services.offline.tcp[d], false]);
-		for (d in data.services.offline.udp) srv.push([data.services.offline.udp[d], false]);
-		services(srv);
-		cpu_history(data.cpu_history);
-		mem_history(data.mem_history);
-	}, error: function(err) {
-		console.log(err);
+var cpu_chart;
+var mem_chart;
+var chart_options;
+
+$(document).ready(function() {
+	google.setOnLoadCallback(cpu);
+	loadData();
+	setInterval(loadData, 3000);
+	cpu_chart = new google.visualization.Gauge(document.getElementById('cpu-perc'));
+	mem_chart = new google.visualization.Gauge(document.getElementById('ram-perc'));
+	chart_options = {
+		width: 190, height: 190,
+		redFrom: 90, redTo: 100,
+		yellowFrom: 75, yellowTo: 90,
+		minorTicks: 5,
+		animation: {
+			duration: 1000
+		}
 	}
 });
-});
+
+
+
+function loadData() {
+	$.ajax({
+		url: "/data",
+		dataType: "json",
+		success: function(data) {
+			server_up(data.server_up);
+			uptime(data.uptime);
+			srv = [];
+			for (d in data.services.online.tcp) srv.push([data.services.online.tcp[d], true]);
+			for (d in data.services.online.udp) srv.push([data.services.online.udp[d], true]);
+			for (d in data.services.offline.tcp) srv.push([data.services.offline.tcp[d], false]);
+			for (d in data.services.offline.udp) srv.push([data.services.offline.udp[d], false]);
+			services(srv);
+			cpu_history(data.cpu_history);
+			cpu(data.cpu);
+			mem_history(data.mem_history);
+			mem(data.mem);
+		}, error: function(err) {
+			console.log(err);
+		}
+	});
+};
 
 function server_up(up) {
 	if (up) {
@@ -48,7 +73,7 @@ function server_up(up) {
 	}
 }
 function uptime(time) {
-	$("#uptime").text(time);
+	$("#uptime").text(uptimeFormatter(time*1000));
 }
 function services(srv) {
 	$("#services").html("");
@@ -79,7 +104,14 @@ function cpu_history(cpu) {
 	    x_accessor: 'date',
 	    y_accessor: 'load',
 		format: 'percentage',
+		interpolate: 'linear'
 	});
+}
+function cpu(cpu_usage) {
+	var data = google.visualization.arrayToDataTable([
+		[ "CPU", parseFloat(cpu_usage)*100|0 ] 
+	], true);
+	cpu_chart.draw(data, chart_options);
 }
 function mem_history(mem) {
 	for (d in mem) mem[d].date = new Date(mem[d].date);
@@ -93,5 +125,28 @@ function mem_history(mem) {
 	    x_accessor: 'date',
 	    y_accessor: 'load',
 		format: 'percentage',
+		interpolate: 'linear'
 	});
+}
+function mem(mem_usage) {
+	var data = google.visualization.arrayToDataTable([
+		[ "RAM", parseFloat(mem_usage)*100|0 ] 
+	], true);
+	mem_chart.draw(data, chart_options);
+}
+
+function uptimeFormatter(time) {
+	var days = Math.floor(time / (1000 * 60 * 60 * 24));
+	time -=  days * (1000 * 60 * 60 * 24);
+
+	var hours = Math.floor(time / (1000 * 60 * 60));
+	time -= hours * (1000 * 60 * 60);
+
+	var mins = Math.floor(time / (1000 * 60));
+	time -= mins * (1000 * 60);
+
+	var seconds = Math.floor(time / (1000));
+	time -= seconds * (1000);
+
+	return days + " days, " + hours + " hours, " + mins + " minutes, " + seconds + " seconds";
 }
