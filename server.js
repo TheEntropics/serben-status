@@ -1,6 +1,8 @@
 // SETTINGS
 var target = "serben.tk";
-var loopTime = 5*1000;
+var loopTime = 60*1000;
+var iface = '0.0.0.0';
+var port = 1337;
 
 var http = require('http');
 var util = require('./utility.js');
@@ -23,8 +25,10 @@ var server = http.createServer(function (req, res) {
 
 	if (path === "/data") {
 		// serve the dynamic resource
+		res.setHeader('Content-Type', "application/json");
 		res.write(JSON.stringify(util.buffers));
 		res.end();
+		loop();
 		return;
 	}
 
@@ -73,10 +77,10 @@ function init() {
 	loop();
 }
 
-server.listen(1337, '127.0.0.1');
+server.listen(port, iface);
 
 // wait 2sec before start, the dns has to complete
 setTimeout(init, 2*1000);
 
-console.log('Server running at http://127.0.0.1:1337/');
+console.log('Server running at http://'+iface+':'+port+'/');
 setInterval(loop, loopTime);

@@ -24,7 +24,7 @@ var chart_options;
 $(document).ready(function() {
 	google.setOnLoadCallback(cpu);
 	loadData();
-	setInterval(loadData, 3000);
+	setInterval(loadData, 2000);
 	cpu_chart = new google.visualization.Gauge(document.getElementById('cpu-perc'));
 	mem_chart = new google.visualization.Gauge(document.getElementById('ram-perc'));
 	chart_options = {
