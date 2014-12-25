@@ -8,7 +8,7 @@ var serviceNames = {
 	"smtp": ["SMTP Server", "services"],
 	"imap": ["IMAP Server", "services"],
 	"rdp": ["Remote Desktop", "services"],
-	"forum": ["forum.serben.tk", "services"],
+	"forum": ["<a href='http://forum.serben.tk'>forum.serben.tk</a>", "services"],
 	"torrent": ["Transmission", "services"],
 	"download": ["Download Manager", "services"],
 	"minecraft": ["Minecraft", "games"],
