@@ -110,7 +110,13 @@ function cpu_history(cpu) {
 	    x_accessor: 'date',
 	    y_accessor: 'load',
 		format: 'percentage',
-		interpolate: 'linear'
+		interpolate: 'linear',
+		xax_format: function(d) {
+		    var df = d3.time.format('%H:%M');
+		    return df(d);
+		},
+		show_years: false,
+		xax_count: 10
 	});
 }
 function cpu(cpu_usage) {
@@ -131,7 +137,13 @@ function mem_history(mem) {
 	    x_accessor: 'date',
 	    y_accessor: 'load',
 		format: 'percentage',
-		interpolate: 'linear'
+		interpolate: 'linear',
+		xax_format: function(d) {
+		    var df = d3.time.format('%H:%M');
+		    return df(d);
+		},
+		show_years: false,
+		xax_count: 10
 	});
 }
 function mem(mem_usage) {
