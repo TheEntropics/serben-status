@@ -47,16 +47,22 @@ function loadData() {
 		success: function(data) {
 			server_up(data.server_up);
 			uptime(data.uptime);
+			
 			srv = [];
 			for (d in data.services.online.tcp) srv.push([data.services.online.tcp[d], true]);
 			for (d in data.services.online.udp) srv.push([data.services.online.udp[d], true]);
 			for (d in data.services.offline.tcp) srv.push([data.services.offline.tcp[d], false]);
 			for (d in data.services.offline.udp) srv.push([data.services.offline.udp[d], false]);
 			services(srv);
+
 			cpu_history(data.cpu_history);
 			cpu(data.cpu);
-			mem_history(data.mem_history);
+			
+			mem_history(data.mem_history);			
 			mem(data.mem);
+
+			av = data.avaiability_success/data.avaiability_samples;
+			avaiability((av*100).toFixed(2)+"%");
 		}, error: function(err) {
 			console.log(err);
 		}
@@ -133,6 +139,10 @@ function mem(mem_usage) {
 		[ "RAM", parseFloat(mem_usage)*100|0 ] 
 	], true);
 	mem_chart.draw(data, chart_options);
+}
+
+function avaiability(av) {
+	$("#avaiability").text(av);
 }
 
 function uptimeFormatter(time) {

@@ -24,3 +24,7 @@ body {
 .service-offline {
 	background: #e74c3c;
 }
+
+#server-base-info p {
+	margin-bottom: 0px;
+}

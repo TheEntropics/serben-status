@@ -4,6 +4,7 @@ var loopTime = 5*1000;
 
 var http = require('http');
 var util = require('./utility.js');
+
 // resolve host name
 var dns = require('dns');
 dns.lookup(target, function onLookup(err, addresses, family) {
@@ -14,6 +15,7 @@ dns.lookup(target, function onLookup(err, addresses, family) {
 	util.init(addresses);
 	console.log("The target is: " + addresses);
 });
+
 // start a simple http server
 var server = http.createServer(function (req, res) {
 	var path = req.url;
@@ -77,4 +79,4 @@ server.listen(1337, '127.0.0.1');
 setTimeout(init, 2*1000);
 
 console.log('Server running at http://127.0.0.1:1337/');
-setInterval(loop, 5*1000);
+setInterval(loop, loopTime);

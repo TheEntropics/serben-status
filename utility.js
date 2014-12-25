@@ -58,6 +58,8 @@ var services = {
 var buffers = {
 	server_up: false,
 	ping_history: [],
+	avaiability_success: 0,
+	avaiability_samples: 0,
 	services: {
 		online: {
 			tcp: [],
@@ -96,7 +98,9 @@ function ping() {
 			if (error) {
 				addPing(0, ms);
 				buffers.server_up = false;
+				console.log("ERROR! The server is DOWN!");
 			} else {
+				console.log("server is UP! ping:" + ms + "ms"); 
 				addPing(1, ms);
 				buffers.server_up = true;
 				buffers.ping_history.push({
@@ -105,7 +109,9 @@ function ping() {
 				});
 				if (buffers.ping_history.lenght > PING_HISTORY_SIZE) 
 					array.shift();
+				buffers.avaiability_success++;
 			}
+			buffers.avaiability_samples++;
 		});
 	}
 	
@@ -124,6 +130,9 @@ function loadPing() {
 					date: data[i].date,
 					ping: data[i].ping
 				});
+				if (data[i].up)
+					buffers.avaiability_success++;
+				buffers.avaiability_samples++;
 			}
 		}
 	});
