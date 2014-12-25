@@ -118,7 +118,8 @@ function cpu_history(cpu) {
 		    return df(d);
 		},
 		show_years: false,
-		xax_count: 10
+		xax_count: 10,
+		transition_on_update: false
 	});
 }
 function cpu(cpu_usage) {
@@ -145,7 +146,8 @@ function mem_history(mem) {
 		    return df(d);
 		},
 		show_years: false,
-		xax_count: 10
+		xax_count: 10,
+		transition_on_update: false
 	});
 }
 function mem(mem_usage) {
