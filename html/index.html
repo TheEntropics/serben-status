@@ -22,8 +22,8 @@
 </head>
 <body class="container">
 	<div class="row">
-		<div id="server-up" class="alert alert-success col-md-8"><a href="http://serben.tk" class="alert-link">serben.tk</a> is up!</div>
-		<p class="col-md-8"><small>Uptime: 2 day</small></p>
+		<div id="server-up" class="alert alert-warning col-md-8"><a href="http://serben.tk" class="alert-link">serben.tk</a><span> is loading...</span></div>
+		<p class="col-md-8"><small>Uptime: <span id="uptime">loading</span></small></p>
 	</div>
 	<div class="row">
 		<div class="col-xs-2">
@@ -59,16 +59,8 @@
 
 	<h1>Services</h1>
 	<div id="service-list" class="col-md-8 row">
-		<div id="services" class="col-md-6">
-			<div class="service service-online">ssh</div>
-			<div class="service service-online">ftp</div>
-			<div class="service service-online">ftp</div>
-			<div class="service service-online">ftp</div>
-		</div>
-		<div id="games" class="col-md-6">
-			<div class="service service-online">Minecraft</div>
-			<div class="service service-offline">Minecraft-alt</div>
-		</div>
+		<div id="services" class="col-md-6"></div>
+		<div id="games" class="col-md-6"></div>
 	</div>
 
 	<div class="col-md-8">
@@ -96,22 +88,22 @@
 			data_graphic({
 				title: "",
 				description: "",
-				data: data,
+				//data: data,
 				width: $("#cpu-graph").width(),
 				height: $("#cpu-perc").height(),
 				target: '#cpu-graph',
-			    x_accessor: 'date',
-			    y_accessor: 'value',
-				format: 'percentage'
-				//chart_type: 'missing-data',
-				//missing_text: 'loading...'
+			    //x_accessor: 'date',
+			    //y_accessor: 'value',
+				//format: 'percentage'
+				chart_type: 'missing-data',
+				missing_text: 'loading...'
 			});
 			data_graphic({
 				title: "",
 				description: "",
 				data: data,
-				width: $("#cpu-graph").width(),
-				height: $("#cpu-perc").height(),
+				width: $("#ram-graph").width(),
+				height: $("#ram-perc").height(),
 				target: '#ram-graph',
 			    x_accessor: 'date',
 			    y_accessor: 'value',

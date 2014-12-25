@@ -8,8 +8,7 @@ var server = http.createServer(function (req, res) {
 
 	if (path === "/data") {
 		// serve the dynamic resource
-		// use bind and build a json with the response
-		loop();
+		res.write(JSON.stringify(util.buffers));
 		res.end();
 		return;
 	}
@@ -38,6 +37,7 @@ var server = http.createServer(function (req, res) {
  * Do the polling to the interested server and update the internal buffer
  */
 function loop() {
+	console.log("Loop");
 	// ping the server
 	util.ping();
 	// do the port scan
@@ -45,16 +45,23 @@ function loop() {
 	// read the cpu/ram/uptime info
 	util.sysInfo();
 	// load the log
+	// TODO
 }
 
 /**
  * Load to the internal buffer the old data saved in the database
  */ 
 function init() {
-	// connect to db
 	// load the data in the db
+	util.loadPing();
+	util.loadSysInfo();
+	// do a loop
+	loop();
 }
 
 server.listen(1337, '127.0.0.1');
- 
+
+init();
+
 console.log('Server running at http://127.0.0.1:1337/');
+setInterval(loop, 5*1000);
