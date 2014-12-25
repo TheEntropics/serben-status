@@ -63,7 +63,7 @@ function loop() {
 	// read the cpu/ram/uptime info
 	util.sysInfo();
 	// load the log
-	// TODO
+	util.loadLog();
 }
 
 /**

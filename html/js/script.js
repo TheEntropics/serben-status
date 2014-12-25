@@ -63,6 +63,8 @@ function loadData() {
 
 			av = data.avaiability_success/data.avaiability_samples;
 			avaiability((av*100).toFixed(2)+"%");
+
+			log(data.log);
 		}, error: function(err) {
 			console.log(err);
 		}
@@ -171,4 +173,42 @@ function uptimeFormatter(time) {
 	time -= seconds * (1000);
 
 	return days + " days, " + hours + " hours, " + mins + " minutes, " + seconds + " seconds";
+}
+
+function log(logs) {
+	$("#logs").html("");
+	for (l in logs)	loadLog(logs[l]);
+	if (logs.length == 0)
+		$("#logs").html("<p><em>Nothing to show here...");
+}
+
+function loadLog(log) {
+	var div = $("<div>")
+		.addClass("panel")
+		.append(
+			$("<div>")
+				.addClass("panel-heading")
+				.append(
+					$("<span>")
+						.addClass("pull-right small")
+						.text(new Date(log.date))
+				)
+				.append(
+					$("<h3>")
+						.addClass("panel-title")
+						.html(log.title)
+				)
+		)
+		.append(
+			$("<div>")
+				.addClass("panel-body")
+				.html(log.message)
+		);
+	if (log.level == 0) div.addClass("panel-danger");
+	if (log.level == 1) div.addClass("panel-warning");
+	if (log.level == 2) div.addClass("panel-info");
+	if (log.level == 3) div.addClass("panel-success");
+	if (log.level == 4) div.addClass("panel-primary");
+	console.log(log);
+	$("#logs").append(div);
 }

@@ -74,7 +74,8 @@ var buffers = {
 	cpu_history: [],
 	mem: 0.0,
 	mem_history: [],
-	uptime: 0.0
+	uptime: 0.0,
+	log: []
 };
 
 function init(host_ip) {
@@ -107,7 +108,7 @@ function ping() {
 					date: new Date(),
 					ping: ms
 				});
-				if (buffers.ping_history.lenght > PING_HISTORY_SIZE) 
+				if (buffers.ping_history.length > PING_HISTORY_SIZE) 
 					array.shift();
 				buffers.avaiability_success++;
 			}
@@ -238,14 +239,14 @@ function sysInfo() {
 				date: new Date(),
 				load: cpu
 			});
-			if (buffers.cpu_history.lenght > SYS_HISTORY_LENGHT)
+			if (buffers.cpu_history.length > SYS_HISTORY_LENGHT)
 				buffers.cpu_history.shift();
 			
 			buffers.mem_history.push({
 				date: new Date(),
 				load: mem
 			});
-			if (buffers.mem_history.lenght > SYS_HISTORY_LENGHT)
+			if (buffers.mem_history.length > SYS_HISTORY_LENGHT)
 				buffers.mem_history.shift();
 		}
 	});
@@ -269,9 +270,30 @@ function loadSysInfo() {
 	});
 }
 
+
+//
+//		LOG STUFF
+//
+LOG_HISTORY_LENGHT = 5;
+function loadLog() {
+	connection.query("SELECT * FROM log WHERE 1 ORDER BY date DESC LIMIT " + LOG_HISTORY_LENGHT, function(err, data) {
+		if (err) console.log("Error retriving the log: " + err);
+		buffers.log = [];
+		for (l in data) {
+			buffers.log.push({
+				date: data[l].date,
+				level: data[l].level,
+				title: data[l].title,
+				message: data[l].message
+			});
+		}
+	});
+}
+
 exports.ping = ping;
 exports.nmap = nmap;
 exports.sysInfo = sysInfo;
+exports.loadLog = loadLog;
 
 exports.loadPing = loadPing;
 exports.loadSysInfo = loadSysInfo;

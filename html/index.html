@@ -44,53 +44,8 @@
 
 	<div class="col-md-8">
 		<h1>Maintenance Log</h1>
-		<div class="panel panel-danger">
-			<div class="panel-heading"><h3 class="panel-title">Forced reboot after crashing</h3></div>
-			<div class="panel-body">
-				The system was rebooted after a crash. The system is now full operative.
-			</div>
+		<div id="logs">
+			<p><em>Loading...</em></p>
 		</div>
-		<p><em>Nothing to show here!</em></p>
 	</div>
-
-	<script>
-		$( document ).ready(function() {
-			//$('#cpu-perc').circliful();
-			//$('#ram-perc').circliful();
-
-			data = [
-				{ date: new Date("2014-02-01"), value: 0.50 },
-				{ date: new Date("2014-03-01"), value: 0.25 },
-				{ date: new Date("2014-04-01"), value: 0.50 },
-				{ date: new Date("2014-05-01"), value: 0.35 },
-			];
-			data_graphic({
-				title: "",
-				description: "",
-				//data: data,
-				width: $("#cpu-graph").width(),
-				height: $("#cpu-perc").height(),
-				target: '#cpu-graph',
-			    //x_accessor: 'date',
-			    //y_accessor: 'value',
-				//format: 'percentage'
-				chart_type: 'missing-data',
-				missing_text: 'loading...'
-			});
-			data_graphic({
-				title: "",
-				description: "",
-				data: data,
-				width: $("#ram-graph").width(),
-				height: $("#ram-perc").height(),
-				target: '#ram-graph',
-			    x_accessor: 'date',
-			    y_accessor: 'value',
-				format: 'percentage',
-				//chart_type: 'missing-data',
-				//missing_text: 'loading...'
-			});
-
-	    });
-	</script>
 </body>
