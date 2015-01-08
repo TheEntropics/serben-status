@@ -24,7 +24,8 @@ var chart_options;
 $(document).ready(function() {
 	google.setOnLoadCallback(cpu);
 	loadData();
-	setInterval(loadData, 2000);
+	setInterval(loadData, 3000);
+
 	cpu_chart = new google.visualization.Gauge(document.getElementById('cpu-perc'));
 	mem_chart = new google.visualization.Gauge(document.getElementById('ram-perc'));
 	chart_options = {
@@ -38,36 +39,60 @@ $(document).ready(function() {
 	}
 });
 
-
+var buffers = {};
+var lastDate;
 
 function loadData() {
-	$.ajax({
-		url: "/data",
-		dataType: "json",
-		success: function(data) {
-			server_up(data.server_up);
-			uptime(data.uptime);
-			
-			srv = [];
-			for (d in data.services.online.tcp) srv.push([data.services.online.tcp[d], true]);
-			for (d in data.services.online.udp) srv.push([data.services.online.udp[d], true]);
-			for (d in data.services.offline.tcp) srv.push([data.services.offline.tcp[d], false]);
-			for (d in data.services.offline.udp) srv.push([data.services.offline.udp[d], false]);
-			services(srv);
+	$.getJSON(lastDate ? "/data/"+lastDate : "/data").done(function(data) {
 
-			cpu_history(data.cpu_history);
-			cpu(data.cpu);
-			
-			mem_history(data.mem_history);			
-			mem(data.mem);
+	    if (!lastDate) buffers = data;
+	    else {
+            buffers = {
+                server_up: data.server_up,
+                ping_history: buffers.ping_history.concat(data.ping_history),
+                avaiability_success: data.avaiability_success,
+                avaiability_samples: data.avaiability_samples,
+                services: data.services,
+                cpu: data.cpu,
+                cpu_history: buffers.cpu_history.concat(data.cpu_history),
+                mem: data.mem,
+                mem_history: buffers.mem_history.concat(data.mem_history),
+                uptime: data.uptime,
+                log: data.log
+            };
+	    }
 
-			av = data.avaiability_success/data.avaiability_samples;
-			avaiability((av*100).toFixed(2)+"%");
+        lastDate = buffers.cpu_history[buffers.cpu_history.length-1].date;
+        console.log("Buffers: ", buffers);
+        console.log("Last Date: ", lastDate);
 
-			log(data.log);
-		}, error: function(err) {
-			console.log(err);
-		}
+        while (buffers.ping_history.length > 500)
+            buffers.ping_history.shift();
+        while (buffers.cpu_history.length > 500)
+            buffers.cpu_history.shift();
+        while (buffers.mem_history.length > 500)
+            buffers.mem_history.shift();
+
+		server_up(buffers.server_up);
+		uptime(buffers.uptime);
+
+		srv = [];
+		for (d in buffers.services.online.tcp) srv.push([buffers.services.online.tcp[d], true]);
+		for (d in buffers.services.online.udp) srv.push([buffers.services.online.udp[d], true]);
+		for (d in buffers.services.offline.tcp) srv.push([buffers.services.offline.tcp[d], false]);
+		for (d in buffers.services.offline.udp) srv.push([buffers.services.offline.udp[d], false]);
+		services(srv);
+
+		cpu_history(buffers.cpu_history);
+		cpu(buffers.cpu);
+
+		mem_history(buffers.mem_history);
+		mem(buffers.mem);
+
+		av = buffers.avaiability_success/buffers.avaiability_samples;
+		avaiability((av*100).toFixed(2)+"%");
+
+		log(buffers.log);
 	});
 };
 
@@ -97,7 +122,7 @@ function services(srv) {
 		div.html(info[0]);
 
 		$("#"+info[1]).append(div);
-	}	
+	}
 }
 
 function cpu_history(cpu) {
@@ -124,7 +149,7 @@ function cpu_history(cpu) {
 }
 function cpu(cpu_usage) {
 	var data = google.visualization.arrayToDataTable([
-		[ "CPU", parseFloat(cpu_usage)*100|0 ] 
+		[ "CPU", parseFloat(cpu_usage)*100|0 ]
 	], true);
 	cpu_chart.draw(data, chart_options);
 }
@@ -152,7 +177,7 @@ function mem_history(mem) {
 }
 function mem(mem_usage) {
 	var data = google.visualization.arrayToDataTable([
-		[ "RAM", parseFloat(mem_usage)*100|0 ] 
+		[ "RAM", parseFloat(mem_usage)*100|0 ]
 	], true);
 	mem_chart.draw(data, chart_options);
 }

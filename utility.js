@@ -1,4 +1,4 @@
-var target; 
+var target;
 
 var mysql = require("mysql");
 var connection = mysql.createConnection({
@@ -20,7 +20,7 @@ function run_cmd(cmd, args, callBack ) {
 }
 array_contains = function(a, obj) {
     var i = a.length;
-    while (i--) 
+    while (i--)
         if (a[i] === obj)
             return true;
     return false;
@@ -83,6 +83,39 @@ function init(host_ip) {
 }
 
 
+function getBuffer(startDate) {
+    if (startDate) start = new Date(startDate);
+    else           start = new Date('1970-01-01');
+
+    buff = {
+        server_up: buffers.server_up,
+        ping_history: [],
+        avaiability_success: buffers.avaiability_success,
+	    avaiability_samples: buffers.avaiability_samples,
+	    services: buffers.services,
+	    cpu: buffers.cpu,
+	    cpu_history: [],
+	    mem: buffers.mem,
+	    mem_history: [],
+	    uptime: buffers.uptime,
+	    log: []
+    };
+
+    for (i in buffers.ping_history)
+        if (buffers.ping_history[i].date > start)
+            buff.ping_history.push(buffers.ping_history[i]);
+
+    for (i in buffers.cpu_history)
+        if (buffers.cpu_history[i].date > start)
+            buff.cpu_history.push(buffers.cpu_history[i]);
+
+    for (i in buffers.mem_history)
+        if (buffers.mem_history[i].date > start)
+            buff.mem_history.push(buffers.mem_history[i]);
+
+    return buff;
+}
+
 //
 //		PING STUFF
 //
@@ -101,21 +134,21 @@ function ping() {
 				buffers.server_up = false;
 				console.log("ERROR! The server is DOWN!");
 			} else {
-				console.log("server is UP! ping:" + ms + "ms"); 
+				console.log("server is UP! ping:" + ms + "ms");
 				addPing(1, ms);
 				buffers.server_up = true;
 				buffers.ping_history.push({
 					date: new Date(),
 					ping: ms
 				});
-				if (buffers.ping_history.length > PING_HISTORY_SIZE) 
+				if (buffers.ping_history.length > PING_HISTORY_SIZE)
 					array.shift();
 				buffers.avaiability_success++;
 			}
 			buffers.avaiability_samples++;
 		});
 	}
-	
+
 	// repeat the ping 3 times
 	setTimeout(do_ping, 0);
 	setTimeout(do_ping, 1000);
@@ -161,10 +194,10 @@ function nmap() {
 		// parse service port and addd them in the db
 		regex = /(\d+)\//gi
 		port = res.match(regex);
-		
+
 		// if all ports are closed
 		if (!port) port = [];
-	
+
 		// remove the / from the prev regex
 		for (p in port) port[p] = port[p].slice(0, -1);
 		// reset the buffer
@@ -186,7 +219,7 @@ function nmap() {
 		// parse service port and addd them in the db
 		regex = /(\d+)\//gi
 		port = res.match(regex);
-		
+
 		// if all ports are closed
 		if (!port) port = [];
 
@@ -241,7 +274,7 @@ function sysInfo() {
 			});
 			if (buffers.cpu_history.length > SYS_HISTORY_LENGHT)
 				buffers.cpu_history.shift();
-			
+
 			buffers.mem_history.push({
 				date: new Date(),
 				load: mem
@@ -300,3 +333,5 @@ exports.loadSysInfo = loadSysInfo;
 
 exports.buffers = buffers;
 exports.init = init;
+exports.getBuffer = getBuffer;
+exports.query = query;

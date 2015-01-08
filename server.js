@@ -23,12 +23,18 @@ var server = http.createServer(function (req, res) {
 	var path = req.url;
 	if (path === "/") path = "/index.html";
 
-	if (path === "/data") {
+	if (path.match(/^\/data/)) {
+	    startDate = undefined;
+	    if (path.length > 5 && path[5] == '/')
+	        startDate = path.substr(6);
+
 		// serve the dynamic resource
 		res.setHeader('Content-Type', "application/json");
-		res.write(JSON.stringify(util.buffers));
+		res.write( JSON.stringify( util.getBuffer(startDate) ) );
 		res.end();
+
 		loop();
+
 		return;
 	}
 
@@ -68,7 +74,7 @@ function loop() {
 
 /**
  * Load to the internal buffer the old data saved in the database
- */ 
+ */
 function init() {
 	// load the data in the db
 	util.loadPing();
@@ -77,10 +83,27 @@ function init() {
 	loop();
 }
 
+function formatDate(date) {
+    return date.toISOString().slice(0, 19).replace('T', ' ');
+}
+
+function cleanup() {
+    deleteBefore = new Date();
+    deleteBefore.setHours(deleteBefore.getHours() - 6);
+    deleteBefore = formatDate(deleteBefore);
+    console.log("DROP DATA BEFORE ", deleteBefore);
+    util.query("DELETE FROM pings WHERE up=1 AND date<'" + deleteBefore + "'");
+    util.query("DELETE FROM services WHERE status=1 AND date<'" + deleteBefore + "'");
+    util.query("DELETE FROM sysInfo WHERE date<'" + deleteBefore + "'");
+}
+
 server.listen(port, iface);
 
 // wait 2sec before start, the dns has to complete
 setTimeout(init, 2*1000);
+// every 30min clean up the database
+setTimeout(cleanup, 30*60*1000);
+cleanup();
 
 console.log('Server running at http://'+iface+':'+port+'/');
 setInterval(loop, loopTime);
