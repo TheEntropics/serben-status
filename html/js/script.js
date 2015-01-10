@@ -99,10 +99,10 @@ function loadData() {
 function server_up(up) {
 	if (up) {
 		$("#server-up").attr("class", "alert alert-success col-md-8");
-		$("#server-up span").text(" is up!");
+		$("#server-up span").text(locale.is_up);
 	} else {
 		$("#server-up").attr("class", "alert alert-danger col-md-8");
-		$("#server-up span").text(" is down!");
+		$("#server-up span").text(locale.is_down);
 	}
 }
 function uptime(time) {
@@ -199,14 +199,14 @@ function uptimeFormatter(time) {
 	var seconds = Math.floor(time / (1000));
 	time -= seconds * (1000);
 
-	return days + " days, " + hours + " hours, " + mins + " minutes, " + seconds + " seconds";
+	return days + " " + locale.days + "," + hours + " "+locale.hours+", " + mins + " "+locale.minutes+", " + seconds + " "+locale.seconds;
 }
 
 function log(logs) {
 	$("#logs").html("");
 	for (l in logs)	loadLog(logs[l]);
 	if (logs.length == 0)
-		$("#logs").html("<p><em>Nothing to show here...");
+		$("#logs").html("<p><em>"+locale.nothing);
 }
 
 function loadLog(log) {
