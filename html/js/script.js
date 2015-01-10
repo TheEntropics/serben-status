@@ -199,7 +199,7 @@ function uptimeFormatter(time) {
 	var seconds = Math.floor(time / (1000));
 	time -= seconds * (1000);
 
-	return days + " " + locale.days + "," + hours + " "+locale.hours+", " + mins + " "+locale.minutes+", " + seconds + " "+locale.seconds;
+	return days + " " + locale.days + ", " + hours + " "+locale.hours+", " + mins + " "+locale.minutes+", " + seconds + " "+locale.seconds;
 }
 
 function log(logs) {
