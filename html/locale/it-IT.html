@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Server Monitor</title>
+
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="css/metricsgraphics.css">
+	<link rel="stylesheet" href="css/jquery.circliful.css">
+
+	<link rel="stylesheet" href="css/style.css">
+
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js' charset='utf-8'></script>
+	<script src="js/metricsgraphics.min.js"></script>
+	<script type="text/javascript" src="http://www.google.com/jsapi?autoload=%7B'modules'%3A%5B%7B'name'%3A'visualization'%2C'version'%3A'1'%2C'packages'%3A%5B'gauge'%5D%7D%5D%7D"></script>
+
+	<script src="js/script.js"></script>
+</head>
+<body class="container">
+	<div id="server-base-info" class="row">
+		<div id="server-up" class="alert alert-warning col-md-8"><a href="http://serben.tk" class="alert-link">serben.tk</a><span> Sta caricando...</span></div>
+		<p class="col-md-8"><small>Acceso da: <span id="uptime">Caricamento...</span></small></p>
+		<p class="col-md-8"><small>Disponibilità: <span id="avaiability">Caricamento...</span></small></p>
+	</div>
+	<div class="row">
+		<div class="col-xs-2"><div id="cpu-perc"></div></div>
+		<div id="cpu-graph" class="col-md-6"></div>
+	</div>
+
+	<div class="row">
+		<div class="col-xs-2"><div id="ram-perc"></div></div>
+		<div id="ram-graph" class="col-md-6"></div>
+	</div>
+
+	<h1>Servizi</h1>
+	<div id="service-list" class="col-md-8 row">
+		<div id="services" class="col-md-6"></div>
+		<div id="games" class="col-md-6"></div>
+	</div>
+
+	<div class="col-md-8 row">
+		<h1>Storia degli interventi</h1>
+		<div id="logs">
+			<p><em>Caricamento...</em></p>
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+	<span class="small"><em>BETA</em></span>
+</body>
