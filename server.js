@@ -43,9 +43,19 @@ var server = http.createServer(function (req, res) {
 	var filename = require('path').join("html", url.pathname);
 	require('fs').readFile(filename, function(err, file) {
 		if(err) {
-			res.writeHeader(404);
-			res.write("404: FAIIIIL!!");
-			res.end();
+			require('fs').readFile("html/404.html", function(err, file) {
+				if (err) {
+					res.writeHeader(404);
+					res.write("404: FAIIIIL!!");
+					res.end();
+				} else {
+					res.writeHeader(404, {
+						"Content-Type": require('mime').lookup(filename)
+					});
+					res.write(file, 'binary');
+					res.end();
+				}
+			});
 			console.log("Request: " + path + " - 404");
 			return;
 		}
