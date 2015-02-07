@@ -11,3 +11,9 @@ come la storia dei guasti e della manutenzione.
 
 È consigliato hostare il server di monitoring in un host separato dall'host
 da monitorare.
+
+## Installazione
+Rinominare il file `config.js.example` in `config.js` e aggiustare le configurazioni
+del database.
+
+Avviare il server con `sudo node server.js`
