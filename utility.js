@@ -1,12 +1,7 @@
 var target;
 
 var mysql = require("mysql");
-var connection = mysql.createConnection({
-	host     : 'localhost',
-	user     : 'serben_status',
-	password : 'SerbenStatus',
-	database : 'serben_status'
-});
+var connection = mysql.createConnection(require("./config.js").db_config);
 
 connection.connect();
 
@@ -245,7 +240,7 @@ function nmap() {
 //
 //		CPU/RAM/UPTIME
 //
-SYS_HISTORY_LENGHT = 500;
+SYS_HISTORY_LENGHT = 100;
 
 function sysInfo() {
 	var request = require("request");

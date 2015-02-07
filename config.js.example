@@ -1,0 +1,8 @@
+var db_config = {
+	host     : 'localhost',
+	user     : 'serben_status',
+	password : 'password',
+	database : 'serben_status'
+};
+
+exports.db_config = db_config;
