@@ -16,4 +16,4 @@ da monitorare.
 Rinominare il file `config.js.example` in `config.js` e aggiustare le configurazioni
 del database.
 
-Avviare il server con `sudo node server.js`
+Avviare il server con `sudo node server.js` possibilmente in uno screen...
