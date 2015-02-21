@@ -4,6 +4,8 @@
  * Richiede il file utility.js
  */ 
 
+// Modifica
+
 // SETTINGS
 var target = "serben.tk";
 var loopTime = 60*1000;
