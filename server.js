@@ -1,3 +1,9 @@
+/*
+ * Questo file si occupa di gestire il server web, accettare le richieste
+ * e processare i dati letti dal buffer
+ * Richiede il file utility.js
+ */ 
+
 // SETTINGS
 var target = "serben.tk";
 var loopTime = 60*1000;

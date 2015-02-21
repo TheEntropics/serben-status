@@ -1,3 +1,9 @@
+/*
+ * Questo file mantiene aggiornati i buffer e ottiene i dati dal 
+ * server di destinazione
+ * E' presente un'interfaccia per l'accesso ai dati dei buffer
+ */
+
 var target;
 
 var mysql = require("mysql");
